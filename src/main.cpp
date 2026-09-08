@@ -45,19 +45,18 @@ void updateDisplay(const String &message) {
   display.display();
 }
 
-void onLoRaReceived() {
-  int packetSize = LoRa.parsePacket();
-  if (packetSize) {
-    String receivedMessage = "";
-    while (LoRa.available()) {
-      receivedMessage += (char)LoRa.read();
-    }
-    int rssi = LoRa.packetRssi();
-    float snr = LoRa.packetSnr();
-
-    Serial.printf("[RX] Message: %s | RSSI: %d | SNR: %.2f\n", receivedMessage.c_str(), rssi, snr);
-    updateDisplay("RX: " + receivedMessage);
+void onLoRaReceived(int packetSize) {
+  if (packetSize == 0) return;
+  
+  String receivedMessage = "";
+  while (LoRa.available()) {
+    receivedMessage += (char)LoRa.read();
   }
+  int rssi = LoRa.packetRssi();
+  float snr = LoRa.packetSnr();
+
+  Serial.printf("[RX] Message: %s | RSSI: %d | SNR: %.2f\n", receivedMessage.c_str(), rssi, snr);
+  updateDisplay("RX: " + receivedMessage);
 }
 
 void sendLoRaMessage(const String &message) {
@@ -111,8 +110,8 @@ void loop() {
         sendLoRaMessage(message);
       } else if (command == "status") {
         Serial.printf("Messages sent: %lu\n", messageCount);
-        Serial.printf("LoRa Frequency: %u Hz\n", LORA_FREQUENCY);
-        Serial.printf("LoRa Bandwidth: %u Hz\n", LORA_BANDWIDTH);
+        Serial.printf("LoRa Frequency: %u Hz\n", (unsigned int)LORA_FREQUENCY);
+        Serial.printf("LoRa Bandwidth: %u Hz\n", (unsigned int)LORA_BANDWIDTH);
         Serial.printf("LoRa Spreading Factor: %d\n", LORA_SPREADING_FACTOR);
       } else if (command == "help") {
         Serial.println("Available commands:");
