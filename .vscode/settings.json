@@ -1,0 +1,22 @@
+{
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": true,
+    "python.linting.pylintPath": "${workspaceFolder}/.pio/penv/bin/pylint",
+    "python.linting.pylintArgs": [
+        "--load-plugins=pylint_django"
+    ],
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        ".pio": true,
+        ".vscode": true
+    },
+    "search.exclude": {
+        "**/.pio": true,
+        "**/.vscode": true
+    },
+    "C_Cpp.intelliSenseEngine": "Tag Parser"
+}
